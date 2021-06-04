@@ -42,6 +42,7 @@ class RecipeListFragment : Fragment() {
                         Text(text = "View Recipe")
                     }
                 }
+            }
         }
     }
 }
