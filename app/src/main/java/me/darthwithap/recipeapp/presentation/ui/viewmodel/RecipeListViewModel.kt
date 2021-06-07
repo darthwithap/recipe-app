@@ -51,4 +51,6 @@ class RecipeListViewModel @ViewModelInject constructor(
     fun onCategoryScrollPositionChanged(position: Float) {
         _categoryScrollPosition = position
     }
+
+    fun categoryScrollPosition() = _categoryScrollPosition
 }

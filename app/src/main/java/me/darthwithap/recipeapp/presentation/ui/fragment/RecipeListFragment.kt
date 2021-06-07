@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -28,8 +29,11 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import me.darthwithap.recipeapp.presentation.ui.viewmodel.RecipeListViewModel
 import androidx.compose.material.TextFieldDefaults.textFieldColors
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
+import kotlinx.coroutines.launch
 import me.darthwithap.recipeapp.presentation.components.FoodCategoryChip
+import me.darthwithap.recipeapp.presentation.components.SearchAppBar
 import me.darthwithap.recipeapp.presentation.components.recipeCard
 import me.darthwithap.recipeapp.presentation.util.getAllFoodCategories
 
@@ -51,71 +55,16 @@ class RecipeListFragment : Fragment() {
                 val selectedCategory = viewModel.selectedCategory.value
 
                 Column {
-                    Surface(
-                        elevation = 8.dp,
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        color = Color.White
-                    ) {
-                        Column {
-                            Row(
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                val focusManager = LocalFocusManager.current
-                                TextField(
-                                    modifier = Modifier
-                                        .fillMaxWidth(0.8f)
-                                        .padding(8.dp),
-                                    value = query,
-                                    onValueChange = {
-                                        viewModel.onQueryChanged(it)
-                                    },
-                                    label = {
-                                        Text(text = "Search")
-                                    },
-                                    keyboardOptions = KeyboardOptions(
-                                        keyboardType = KeyboardType.Text,
-                                        imeAction = ImeAction.Search
-                                    ),
-                                    leadingIcon = {
-                                        Icon(
-                                            imageVector = Icons.Filled.Search,
-                                            contentDescription = null
-                                        )
-                                    },
-                                    keyboardActions = KeyboardActions(
-                                        onSearch = {
-                                            viewModel.search()
-                                            focusManager.clearFocus()
-                                        }
-                                    ),
-                                    textStyle = TextStyle(
-                                        color = MaterialTheme.colors.onSurface
-                                    ),
-                                    colors = textFieldColors(
-                                        backgroundColor = MaterialTheme.colors.surface
-                                    )
-                                )
-                            }
-                            val scrollState = rememberScrollState()
-                            LazyRow(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 8.dp, bottom = 8.dp),
-                                state = rememberLazyListState(),
-                            ) {
-                                itemsIndexed(getAllFoodCategories()) { index, category ->
-                                    FoodCategoryChip(
-                                        category = category.value,
-                                    isSelected = category == selectedCategory,
-                                        onExecuteSearch = viewModel::search,
-                                    ) {
-                                        viewModel.onSelectedCategoryChanged(it)
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    SearchAppBar(
+                        query = query,
+                        onQueryChanged = viewModel::onQueryChanged,
+                        onExecuteSearch = viewModel::search,
+                        categoryScrollPosition = viewModel.categoryScrollPosition(),
+                        selectedCategory = selectedCategory,
+                        onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
+                        onCategoryScrollPositionChanged = viewModel::onCategoryScrollPositionChanged
+                    )
+
                     LazyColumn {
                         itemsIndexed(
                             items = recipes
