@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-parcelize'
+    id 'kotlin-android-extensions'
     id 'dagger.hilt.android.plugin'
 }
 
@@ -81,6 +81,9 @@ dependencies {
     //Hilt-ViewModel
     implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01'
     kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha01'
+
+    //Accompanist-Coil
+    implementation 'com.google.accompanist:accompanist-coil:0.11.1'
 }
 kapt {
     correctErrorTypes true
