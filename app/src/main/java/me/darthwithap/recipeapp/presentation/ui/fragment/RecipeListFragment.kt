@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,12 +30,13 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import me.darthwithap.recipeapp.presentation.ui.viewmodel.RecipeListViewModel
 import androidx.compose.material.TextFieldDefaults.textFieldColors
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.launch
-import me.darthwithap.recipeapp.presentation.components.FoodCategoryChip
-import me.darthwithap.recipeapp.presentation.components.SearchAppBar
-import me.darthwithap.recipeapp.presentation.components.recipeCard
+import me.darthwithap.recipeapp.presentation.components.*
 import me.darthwithap.recipeapp.presentation.util.getAllFoodCategories
 
 private const val TAG = "RecipeListFragment"
@@ -53,6 +55,7 @@ class RecipeListFragment : Fragment() {
                 val recipes = viewModel.recipes.value
                 val query = viewModel.query.value
                 val selectedCategory = viewModel.selectedCategory.value
+                val loading = viewModel.loading.value
 
                 Column {
                     SearchAppBar(
@@ -66,12 +69,26 @@ class RecipeListFragment : Fragment() {
                     )
 
                     LazyColumn {
-                        itemsIndexed(
-                            items = recipes
-                        ) { index, recipe ->
-                            recipeCard(recipe) {}
+                        repeat(10) {
+                            item {
+                                ShimmerRecipeCardAnimation()
+                            }
                         }
                     }
+
+//                    Box(
+//                        modifier = Modifier.fillMaxSize()
+//                    ) {
+//                        LazyColumn {
+//                            itemsIndexed(
+//                                items = recipes
+//                            ) { index, recipe ->
+//                                recipeCard(recipe) {}
+//                            }
+//                        }
+//
+//                        CircularIndeterminateProgressBar(loading, 0.3f)
+//                    }
                 }
             }
         }
