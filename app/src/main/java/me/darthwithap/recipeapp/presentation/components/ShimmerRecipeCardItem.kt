@@ -17,15 +17,18 @@ import androidx.compose.ui.unit.dp
 fun ShimmerRecipeCardItem(
     colors: List<Color>,
     cardHeight: Dp,
-    translation: Float
+    padding: Dp,
+    xTranslation: Float,
+    yTranslation: Float,
+    gradientWidth: Float
 ) {
     val brush = Brush.linearGradient(
         colors,
-        start = Offset(translation - 80f, translation - 80f),
-        end = Offset(translation + 80f, translation + 80f)
+        start = Offset(xTranslation - gradientWidth / 2, yTranslation - gradientWidth / 2),
+        end = Offset(xTranslation + gradientWidth / 2, yTranslation + gradientWidth / 2)
     )
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(padding)) {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -34,8 +37,8 @@ fun ShimmerRecipeCardItem(
         )
         Spacer(
             modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .height(28.dp)
+                .fillMaxWidth(0.85f)
+                .height(24.dp)
                 .padding(vertical = 8.dp)
                 .background(brush = brush)
         )

@@ -10,11 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
 import me.darthwithap.recipeapp.R
 import me.darthwithap.recipeapp.domain.model.Recipe
+import me.darthwithap.recipeapp.util.RECIPE_CARD_HEIGHT
 
 @Composable
 fun recipeCard(
@@ -24,9 +26,7 @@ fun recipeCard(
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
-            .padding(
-                vertical = 8.dp
-            )
+            .padding(16.dp)
             .fillMaxWidth()
             .clickable(onClick = onClick),
         elevation = 8.dp
@@ -45,7 +45,7 @@ fun recipeCard(
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(230.dp),
+                        .height(RECIPE_CARD_HEIGHT),
                     contentScale = ContentScale.Crop
                 )
 
@@ -53,7 +53,7 @@ fun recipeCard(
             recipe.title?.let {
                 Row(
                     modifier = Modifier.padding(
-                        vertical = 12.dp,
+                        vertical = 4.dp,
                         horizontal = 8.dp
                     )
                 ) {
@@ -62,15 +62,18 @@ fun recipeCard(
                         modifier = Modifier
                             .fillMaxWidth(0.85f)
                             .wrapContentWidth(Alignment.Start),
-                        style = MaterialTheme.typography.h5
+                        style = MaterialTheme.typography.h3,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = recipe.rating.toString(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentWidth(Alignment.End)
+                            .padding(2.dp)
                             .align(Alignment.CenterVertically),
-                        style = MaterialTheme.typography.h6
+                        style = MaterialTheme.typography.h4
                     )
                 }
             }

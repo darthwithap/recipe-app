@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import me.darthwithap.recipeapp.presentation.theme.Black
 
 @Composable
 fun FoodCategoryChip(
@@ -36,8 +37,8 @@ fun FoodCategoryChip(
         ) {
             Text(
                 text = category,
-                style = MaterialTheme.typography.body2,
-                color = Color.White,
+                style = MaterialTheme.typography.button,
+                color = if (isSelected) Black else MaterialTheme.colors.onPrimary,
                 modifier = Modifier.padding(8.dp)
             )
         }

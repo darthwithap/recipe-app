@@ -18,6 +18,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(ApplicationComponent::class)
 object NetworkModule {
+
     @Singleton
     @Provides
     fun provideRecipeMapper(): RecipeDtoMapper {

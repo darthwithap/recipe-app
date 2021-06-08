@@ -10,7 +10,6 @@ import me.darthwithap.recipeapp.repository.RecipeRepository
 import me.darthwithap.recipeapp.repository.RecipeRepositoryImpl
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(ApplicationComponent::class)
 object RepositoryModule {

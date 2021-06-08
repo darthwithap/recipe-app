@@ -1,5 +1,6 @@
 package me.darthwithap.recipeapp.presentation.components
 
+import android.graphics.Paint
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,19 +11,27 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Nightlight
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import kotlinx.coroutines.launch
+import me.darthwithap.recipeapp.presentation.ui.BaseApplication
 import me.darthwithap.recipeapp.presentation.util.FoodCategory
 import me.darthwithap.recipeapp.presentation.util.getAllFoodCategories
+import javax.inject.Inject
 
 @Composable
 fun SearchAppBar(
@@ -32,14 +41,16 @@ fun SearchAppBar(
     categoryScrollPosition: Float,
     selectedCategory: FoodCategory?,
     onSelectedCategoryChanged: (String) -> Unit,
-    onCategoryScrollPositionChanged: (Float) -> Unit
-
+    onCategoryScrollPositionChanged: (Float) -> Unit,
+    toggleThemeIcon: ImageVector,
+    toggleTheme: () -> Unit
 ) {
+
     Surface(
         elevation = 8.dp,
         modifier = Modifier
             .fillMaxWidth(),
-        color = Color.White
+        color = MaterialTheme.colors.surface
     ) {
         Column {
             Row(
@@ -80,6 +91,27 @@ fun SearchAppBar(
                         backgroundColor = MaterialTheme.colors.surface
                     )
                 )
+                ConstraintLayout(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterVertically)
+                ) {
+                    val iconRow = createRef()
+                    Row(
+                        modifier = Modifier.constrainAs(iconRow) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(parent.end)
+                        }
+                    ) {
+                        IconButton(onClick = { toggleTheme() }, modifier = Modifier.padding(2.dp)) {
+                            Icon(imageVector = toggleThemeIcon, contentDescription = null)
+                        }
+                        IconButton(onClick = {}, modifier = Modifier.padding(2.dp)) {
+                            Icon(imageVector = Icons.Filled.MoreVert, contentDescription = null)
+                        }
+                    }
+                }
             }
             val scrollState = rememberScrollState()
             val coroutineScope = rememberCoroutineScope()
