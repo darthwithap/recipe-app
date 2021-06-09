@@ -35,6 +35,8 @@ import me.darthwithap.recipeapp.presentation.components.util.SnackbarController
 import me.darthwithap.recipeapp.presentation.theme.AppTheme
 import me.darthwithap.recipeapp.presentation.ui.BaseApplication
 import me.darthwithap.recipeapp.presentation.ui.viewmodel.RecipeListViewModel
+import me.darthwithap.recipeapp.presentation.util.RecipeListEvent
+import me.darthwithap.recipeapp.presentation.util.RecipeListEvent.*
 import me.darthwithap.recipeapp.util.PAGE_SIZE
 import me.darthwithap.recipeapp.util.RECIPE_CARD_HEIGHT
 import javax.inject.Inject
@@ -76,7 +78,7 @@ class RecipeListFragment : Fragment() {
                                                 scaffoldState, "Error on MILK recipes", "ERROR"
                                             )
                                         }
-                                    } else viewModel.search()
+                                    } else viewModel.onTriggerEvent(SearchEvent)
                                 },
                                 categoryScrollPosition = viewModel.categoryScrollPosition(),
                                 selectedCategory = selectedCategory,
@@ -105,7 +107,7 @@ class RecipeListFragment : Fragment() {
                                     ) { index, recipe ->
                                         viewModel.onRecipeScrollPositionChanged(index)
                                         if ((index + 1) >= (page * PAGE_SIZE) && !loading) {
-                                            viewModel.nextPage()
+                                            viewModel.onTriggerEvent(NextPageEvent)
                                         }
                                         recipeCard(recipe) {}
                                     }
