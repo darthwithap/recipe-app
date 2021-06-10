@@ -23,13 +23,11 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.google.android.material.bottomappbar.BottomAppBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import me.darthwithap.recipeapp.presentation.components.CircularIndeterminateProgressBar
-import me.darthwithap.recipeapp.presentation.components.DefaultSnackbar
-import me.darthwithap.recipeapp.presentation.components.SearchAppBar
-import me.darthwithap.recipeapp.presentation.components.recipeCard
+import me.darthwithap.recipeapp.presentation.components.*
 import me.darthwithap.recipeapp.presentation.components.util.ShimmerRecipeCardAnimation
 import me.darthwithap.recipeapp.presentation.components.util.SnackbarController
 import me.darthwithap.recipeapp.presentation.theme.AppTheme
@@ -57,14 +55,19 @@ class RecipeListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                AppTheme(darkTheme = application.isDarkTheme.value) {
+                val loading = viewModel.loading.value
+                val scaffoldState = rememberScaffoldState()
+                AppTheme(
+                    isDark = application.isDarkTheme.value,
+                    loading,
+                    scaffoldState,
+                    Alignment.BottomCenter
+                ) {
                     val recipes = viewModel.recipes.value
                     val query = viewModel.query.value
                     val selectedCategory = viewModel.selectedCategory.value
                     val page = viewModel.page.value
-                    val loading = viewModel.loading.value
                     val isDark = application.isDarkTheme.value
-                    val scaffoldState = rememberScaffoldState()
 
                     Scaffold(
                         topBar = {
@@ -94,32 +97,17 @@ class RecipeListFragment : Fragment() {
                         Column(
                             modifier = Modifier.background(MaterialTheme.colors.background)
                         ) {
-                            Box(
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                if (loading && recipes.isEmpty()) ShimmerRecipeCardAnimation(
-                                    RECIPE_CARD_HEIGHT
-                                )
-
-                                LazyColumn {
-                                    itemsIndexed(
-                                        items = recipes
-                                    ) { index, recipe ->
-                                        viewModel.onRecipeScrollPositionChanged(index)
-                                        if ((index + 1) >= (page * PAGE_SIZE) && !loading) {
-                                            viewModel.onTriggerEvent(NextPageEvent)
-                                        }
-                                        recipeCard(recipe) {}
-                                    }
-                                }
-                                CircularIndeterminateProgressBar(loading, 0.3f)
-                                DefaultSnackbar(
-                                    snackbarHostState = scaffoldState.snackbarHostState,
-                                    modifier = Modifier.align(Alignment.BottomCenter)
-                                ) {
-                                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                                }
-                            }
+                            RecipeList(
+                                loading,
+                                recipes,
+                                viewModel::onRecipeScrollPositionChanged,
+                                page,
+                                { viewModel.onTriggerEvent(NextPageEvent) },
+                                scaffoldState,
+                                snackbarController,
+                                findNavController(),
+                                isDark
+                            )
                         }
                     }
                 }

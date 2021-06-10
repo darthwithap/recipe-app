@@ -29,18 +29,26 @@ fun ShimmerRecipeCardItem(
     )
 
     Column(modifier = Modifier.padding(padding)) {
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(cardHeight)
-                .background(brush = brush)
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth(0.85f)
-                .height(24.dp)
-                .padding(vertical = 8.dp)
-                .background(brush = brush)
-        )
+        Surface(
+            shape = MaterialTheme.shapes.medium
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .size(cardHeight)
+                    .background(brush = brush)
+            )
+        }
+        Surface(
+            shape = MaterialTheme.shapes.medium
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth(0.85f)
+                    .height(24.dp)
+                    .padding(vertical = 8.dp)
+                    .background(brush = brush)
+            )
+        }
     }
 }

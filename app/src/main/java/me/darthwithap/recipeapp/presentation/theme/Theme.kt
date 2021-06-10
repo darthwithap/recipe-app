@@ -1,9 +1,14 @@
 package me.darthwithap.recipeapp.presentation.theme
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import me.darthwithap.recipeapp.presentation.components.CircularIndeterminateProgressBar
+import me.darthwithap.recipeapp.presentation.components.DefaultSnackbar
 
 private val LightThemeColors = lightColors(
     primary = Primary,
@@ -37,14 +42,32 @@ private val DarkThemeColors = darkColors(
 
 @Composable
 fun AppTheme(
-    darkTheme: Boolean,
+    isDark: Boolean,
+    isProgressBarShowing: Boolean,
+    scaffoldState: ScaffoldState,
+    snackbarAlignment: Alignment,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colors = if (darkTheme) DarkThemeColors else LightThemeColors,
+        colors = if (isDark) DarkThemeColors else LightThemeColors,
         typography = QuickSandTypography,
         shapes = AppShapes
     ) {
-        content()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    color = if (isDark) JustBlack else FaintGray
+                )
+        ) {
+            content()
+            CircularIndeterminateProgressBar(isProgressBarShowing, 0.3f)
+            DefaultSnackbar(
+                snackbarHostState = scaffoldState.snackbarHostState,
+                modifier = Modifier.align(snackbarAlignment)
+            ) {
+                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+            }
+        }
     }
 }

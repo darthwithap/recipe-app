@@ -22,7 +22,6 @@ import javax.inject.Named
 private const val TAG = "RecipeListViewModel"
 
 class RecipeListViewModel @ViewModelInject constructor(
-    //private val savedStateHandle: SavedStateHandle,
     private val repository: RecipeRepository,
     @Named("auth_token") private val token: String,
     @Assisted private val savedStateHandle: SavedStateHandle
@@ -37,7 +36,7 @@ class RecipeListViewModel @ViewModelInject constructor(
 
     init {
         restoreFromSavedState()
-        if (recipeListScrollPosition != 0 && recipes.value.isNotEmpty()) {
+        if (recipeListScrollPosition != 0 && recipes.value.isNotEmpty() && query.value.isNotBlank()) {
             onTriggerEvent(RestoreEvent)
         } else onTriggerEvent(SearchEvent)
     }

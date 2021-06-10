@@ -11,9 +11,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.darthwithap.recipeapp.presentation.components.ShimmerRecipeCardItem
+import me.darthwithap.recipeapp.presentation.components.ShimmerRecipeItem
 
 @Composable
-fun ShimmerRecipeCardAnimation(
+fun ShimmerRecipeAnimation(
     imageHeight: Dp,
     padding: Dp = 16.dp
 ) {
@@ -43,18 +44,16 @@ fun ShimmerRecipeCardAnimation(
                 )
             )
 
-            LazyColumn {
-                items(4) {
-                    ShimmerRecipeCardItem(
-                        colors = shimmerColors,
-                        cardHeight = imageHeight,
-                        padding = padding,
-                        xTranslation = xTransition,
-                        yTranslation = yTransition,
-                        gradientWidth = gradientWidth
-                    )
-                }
-            }
+            ShimmerRecipeItem(
+                colors = shimmerColors,
+                cardHeight = imageHeight,
+                padding = padding,
+                xTranslation = xTransition,
+                yTranslation = yTransition,
+                gradientWidth = gradientWidth
+            )
+
+
         }
     }
 }
